@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>仓颉自造字预览（真实字体渲染）</title>
+<style>
+  :root { color-scheme: light; }
+  body { margin:0; padding:32px; background:#fbfaf7; color:#1f2328;
+         font-family:-apple-system,'Segoe UI','Microsoft YaHei',sans-serif; }
+  h1 { font-size:20px; font-weight:600; letter-spacing:.04em; margin:0 0 6px; }
+  .sub { opacity:.6; font-size:13px; margin-bottom:24px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:12px; }
+  .card { display:flex; gap:14px; align-items:center; background:#ffffff;
+           border:1px solid #e6e2d9; border-radius:14px; padding:12px 14px; }
+  .fig { flex:0 0 72px; }
+  .cp { font-size:11px; opacity:.5; font-family:ui-monospace,Consolas,monospace; }
+  .ph { font-size:15px; font-weight:600; margin:2px 0 4px; word-break:break-all; }
+  .meta { font-size:11.5px; opacity:.6; }
+</style><style>
+@font-face { font-family: 'CangjieCompress'; src: url('CangjieCompress.ttf') format('truetype'); }
+.ph, .fig, .cp { font-family: 'CangjieCompress', 'KaiTi', serif; }
+</style></head>
+<body>
+  <h1>仓颉自造字预览（真实字体渲染）</h1>
+  <div class="sub">左义符 + 右声符 = 合体字。字表本身也计入 token 成本，所以宁少勿滥。</div>
+  <div class="grid">
+  <div class="card">
+    <div class="fig" style="color:#1f2328"><svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72" role="img" aria-label="▀">
+  <rect x="1" y="1" width="70" height="70" rx="5.76" fill="none" stroke="currentColor" stroke-opacity="0.25"/>
+  <text x="4.32" y="4.32" font-family="'KaiTi','STKaiti','SimSun',serif" font-size="60.825599999999994"
+        fill="currentColor" fill-opacity="0.55" textLength="29.1456" lengthAdjust="spacingAndGlyphs"
+        dominant-baseline="text-before-edge">事</text>
+  <text x="36.0" y="4.32" font-family="'KaiTi','STKaiti','SimSun',serif" font-size="60.825599999999994"
+        fill="currentColor" textLength="29.1456" lengthAdjust="spacingAndGlyphs"
+        dominant-baseline="text-before-edge">向</text>
+</svg></div>
+    <div class="body">
+      <code class="cp">U+2580</code>
+      <div class="ph">向量检索</div>
+      <div class="meta">义符 事 · 声符 向 · - 次 · 原价 - tok → 1 tok</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="fig" style="color:#1f2328"><svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72" role="img" aria-label="▄">
+  <rect x="1" y="1" width="70" height="70" rx="5.76" fill="none" stroke="currentColor" stroke-opacity="0.25"/>
+  <text x="4.32" y="4.32" font-family="'KaiTi','STKaiti','SimSun',serif" font-size="60.825599999999994"
+        fill="currentColor" fill-opacity="0.55" textLength="29.1456" lengthAdjust="spacingAndGlyphs"
+        dominant-baseline="text-before-edge">文</text>
+  <text x="36.0" y="4.32" font-family="'KaiTi','STKaiti','SimSun',serif" font-size="60.825599999999994"
+        fill="currentColor" textLength="29.1456" lengthAdjust="spacingAndGlyphs"
+        dominant-baseline="text-before-edge">文</text>
+</svg></div>
+    <div class="body">
+      <code class="cp">U+2584</code>
+      <div class="ph">文档解析</div>
+      <div class="meta">义符 文 · 声符 文 · - 次 · 原价 - tok → 1 tok</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="fig" style="color:#1f2328"><svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72" role="img" aria-label="█">
+  <rect x="1" y="1" width="70" height="70" rx="5.76" fill="none" stroke="currentColor" stroke-opacity="0.25"/>
+  <text x="4.32" y="4.32" font-family="'KaiTi','STKaiti','SimSun',serif" font-size="30.412799999999997"
+        fill="currentColor" fill-opacity="0.55" textLength="58.2912" lengthAdjust="spacingAndGlyphs"
+        dominant-baseline="text-before-edge">事</text>
+  <text x="4.32" y="36.0" font-family="'KaiTi','STKaiti','SimSun',serif" font-size="30.412799999999997"
+        fill="currentColor" textLength="58.2912" lengthAdjust="spacingAndGlyphs"
+        dominant-baseline="text-before-edge">大</text>
+</svg></div>
+    <div class="body">
+      <code class="cp">U+2588</code>
+      <div class="ph">大模型生成</div>
+      <div class="meta">义符 事 · 声符 大 · - 次 · 原价 - tok → 1 tok</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="fig" style="color:#1f2328"><svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72" role="img" aria-label="▋">
+  <rect x="1" y="1" width="70" height="70" rx="5.76" fill="none" stroke="currentColor" stroke-opacity="0.25"/>
+  <text x="4.32" y="4.32" font-family="'KaiTi','STKaiti','SimSun',serif" font-size="60.825599999999994"
+        fill="currentColor" fill-opacity="0.55" textLength="29.1456" lengthAdjust="spacingAndGlyphs"
+        dominant-baseline="text-before-edge">事</text>
+  <text x="36.0" y="4.32" font-family="'KaiTi','STKaiti','SimSun',serif" font-size="60.825599999999994"
+        fill="currentColor" textLength="29.1456" lengthAdjust="spacingAndGlyphs"
+        dominant-baseline="text-before-edge">死</text>
+</svg></div>
+    <div class="body">
+      <code class="cp">U+258B</code>
+      <div class="ph">死信队列</div>
+      <div class="meta">义符 事 · 声符 死 · - 次 · 原价 - tok → 1 tok</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="fig" style="color:#1f2328"><svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72" role="img" aria-label="░">
+  <rect x="1" y="1" width="70" height="70" rx="5.76" fill="none" stroke="currentColor" stroke-opacity="0.25"/>
+  <text x="4.32" y="4.32" font-family="'KaiTi','STKaiti','SimSun',serif" font-size="60.825599999999994"
+        fill="currentColor" fill-opacity="0.55" textLength="29.1456" lengthAdjust="spacingAndGlyphs"
+        dominant-baseline="text-before-edge">事</text>
+  <text x="36.0" y="4.32" font-family="'KaiTi','STKaiti','SimSun',serif" font-size="60.825599999999994"
+        fill="currentColor" textLength="29.1456" lengthAdjust="spacingAndGlyphs"
+        dominant-baseline="text-before-edge">降</text>
+</svg></div>
+    <div class="body">
+      <code class="cp">U+2591</code>
+      <div class="ph">降级回答</div>
+      <div class="meta">义符 事 · 声符 降 · - 次 · 原价 - tok → 1 tok</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="fig" style="color:#1f2328"><svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72" role="img" aria-label="▒">
+  <rect x="1" y="1" width="70" height="70" rx="5.76" fill="none" stroke="currentColor" stroke-opacity="0.25"/>
+  <text x="4.32" y="4.32" font-family="'KaiTi','STKaiti','SimSun',serif" font-size="60.825599999999994"
+        fill="currentColor" fill-opacity="0.55" textLength="29.1456" lengthAdjust="spacingAndGlyphs"
+        dominant-baseline="text-before-edge">事</text>
+  <text x="36.0" y="4.32" font-family="'KaiTi','STKaiti','SimSun',serif" font-size="60.825599999999994"
+        fill="currentColor" textLength="29.1456" lengthAdjust="spacingAndGlyphs"
+        dominant-baseline="text-before-edge">敏</text>
+</svg></div>
+    <div class="body">
+      <code class="cp">U+2592</code>
+      <div class="ph">敏感词过滤</div>
+      <div class="meta">义符 事 · 声符 敏 · - 次 · 原价 - tok → 1 tok</div>
+    </div>
+  </div>
+  </div>
+</body></html>

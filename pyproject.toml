@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cangjie-skill"
+version = "1.0.0"
+description = "Semantic compression + context budgeting for long-running LLM tasks (framework-agnostic Agent Skill)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+keywords = ["llm", "token", "context", "compression", "agent-skill", "mcp", "cangjie"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent",
+  "Topic :: Software Development :: Libraries",
+]
+dependencies = []
+
+[project.optional-dependencies]
+exact = ["tiktoken>=0.7.0"]
+forge = ["fonttools>=4.40.0"]
+all = ["tiktoken>=0.7.0", "fonttools>=4.40.0"]
+
+[project.scripts]
+cangjie = "cangjie.cli:main"
+
+[tool.setuptools]
+packages = ["cangjie"]
+
+[tool.setuptools.package-data]
+cangjie = ["data/*.json"]

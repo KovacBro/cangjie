@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+dist/
+build/
+
+# 仓颉本地状态与生成物（可重新生成，不入库）
+.cangjie/
+*.ttf
+
+# 编辑器 / 系统
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# 日志与本地环境
+*.log
+.env
+.env.*
