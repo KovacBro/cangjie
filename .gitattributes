@@ -1,0 +1,15 @@
+# 统一换行，避免 Windows / macOS 交叉提交产生噪声
+* text=auto eol=lf
+
+# 二进制
+*.png binary
+*.jpg binary
+*.webp binary
+*.zip binary
+*.gif binary
+
+# 语言标注
+*.md text
+*.py text
+*.svg text
+*.html text
