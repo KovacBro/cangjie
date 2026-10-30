@@ -1,6 +1,6 @@
 ---
 name: 仓颉
-description: 省 token 的上下文治理引擎（框架无关）。三件事：① trim 裁掉命令输出的 90% 噪音；② 用「状态卡 + 滚动结论 + 定长包」把每轮成本钉成常数；③ 把高频词/长句折叠成单字（无损可逆，专名不丢）。支持中/英/混排，代码块与路径默认不压，可 CLI、可 MCP、可当库调用。当用户提到"省 token""上下文太长/快满了""怎么压缩提示词""长任务越跑越贵""工具输出太多""做个工作记忆/上下文节食"，或要跨几十轮维护项目状态、反复读同一批文件时使用。
+description: 省 token 的上下文治理引擎（框架无关）。三件事：① trim 裁掉命令输出的 90% 噪音；② 用「状态卡 + 滚动结论 + 定长包」把每轮成本钉成常数；③ 把高频词/长句折叠成单字（无损可逆，专名不丢）。支持中/英/混排，代码块与路径默认不压，可 CLI、可 MCP、可当库调用。当用户提到"省 token""上下文太长/快满了""怎么压缩提示词""长任务越跑越贵""工具输出太多""做个工作记忆/上下文节食"，或要跨几十轮维护项目状态、反复读同一批文件，或想检验一段上下文里什么有用、什么没用（上下文安检 sift）时使用。
 agent_created: true
 ---
 
@@ -47,6 +47,7 @@ cangjie pack  --budget 2000                     # ⑥ 每 5–8 轮重建工作�
 | 想做的事 | 命令 |
 |---|---|
 | 裁输出（有损，最省） | `cangjie trim -- <cmd>` / `cangjie trim -i log.txt --profile pytest` |
+| 上下文安检（检验有用/没用） | `cangjie sift -i ctx.txt` / `cangjie sift --drop -- <cmd>` |
 | 跑命令并压缩输出 | `cangjie run -- <cmd>` |
 | 状态卡 | `cangjie state --set goal=… --add decided=… --add next=… --set fact.k=v` |
 | 滚动结论 | `cangjie roll --add "…" --tag turn-3` / `cangjie roll --budget 300` |

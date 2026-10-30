@@ -19,6 +19,12 @@ This tool does the reverse — it collapses recurring phrases *into* single char
 
 The codec is the *baseline*, not the main weapon. Trimming and budgeting are where the tokens are.
 
+**Context sift** (new in 1.0.1): `cangjie sift` inspects a chunk of context line by line,
+labeling evidence (errors / metrics / paths / decisions / codebook terms / code fences) and
+flagging only high-confidence noise (progress bars, separators, blank lines, consecutive
+duplicates). Anything uncertain is **kept** — never dropping useful content is a hard rule,
+and the default mode changes nothing (report only).
+
 ---
 
 ## Quick start
@@ -28,6 +34,7 @@ pip install -e ".[all]"      # optional extras: tiktoken (exact counting), fontt
 cd <your-project>
 cangjie init
 cangjie trim -- pytest -q                 # kill 90% of the noise
+cangjie sift -i run.log                   # inspect a context: useful vs noise, report only
 cangjie mine . --apply                    # build the codebook
 cangjie block                             # paste into the system prompt
 cangjie state --set goal="cut p99 to 200ms" --set blocker="reranker OOM"
@@ -62,7 +69,7 @@ cangjie install --target workbuddy     # ~/.workbuddy/skills/仓颉
 cangjie install --target claude        # ~/.claude/skills/仓颉
 cangjie install --target agents        # writes a managed block into AGENTS.md
 cangjie install --target dir --dest /path/to/skills
-cangjie mcp                            # MCP server over stdio (6 tools)
+cangjie mcp                            # MCP server over stdio (7 tools)
 ```
 
 See `docs/安装与集成.md` for MCP client JSON, library usage, CI and team setup.
@@ -81,7 +88,7 @@ stops growing while the project keeps growing.
 ## Test
 
 ```bash
-python tests/test_cangjie.py     # 29 tests, no pytest required
+python tests/test_cangjie.py     # 34 tests, no pytest required
 cangjie doctor                   # reversibility + dictionary integrity
 cangjie demo                     # end-to-end demo on a built-in corpus
 python tests/bench.py <path>     # compression ratio on your own project

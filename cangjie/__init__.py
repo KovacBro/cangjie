@@ -6,8 +6,8 @@
 本包不依赖任何 Agent 框架，可独立用 CLI、MCP、或作为库调用。
 """
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __all__ = [
     "config", "tokenizer", "carriers", "mine", "codec", "glyphs", "glyphforge",
-    "state", "memory", "trim", "budget", "report", "cli", "mcp_server",
+    "state", "memory", "trim", "sift", "budget", "report", "cli", "mcp_server",
 ]

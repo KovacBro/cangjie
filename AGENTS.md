@@ -21,11 +21,12 @@ Human 可读的介绍见 `README.md`；给技能加载器读的入口是 `SKILL.
 
 ```bash
 cangjie trim -- pytest -q          # ① 先裁，每次跑长命令都用
-cangjie run -- <cmd>               # ② 跑命令并压缩输出（字码层）
+cangjie sift -i ctx.txt            # ② 上下文安检：检验有用/没用（默认只报告）
+cangjie run -- <cmd>               # ③ 跑命令并压缩输出（字码层）
 cangjie state --set goal="…" --set blocker="…" --add decided="…"
 cangjie roll  --add "本轮结论" --tag turn-3
-cangjie pack  --budget 2000        # ③ 每 5–8 轮重建工作记忆包
-cangjie expand -i <file>           # ④ 对外输出前还原
+cangjie pack  --budget 2000        # ④ 每 5–8 轮重建工作记忆包
+cangjie expand -i <file>           # ⑤ 对外输出前还原
 ```
 
 未安装时用 `python scripts/cj.py <子命令>`，行为完全一致。

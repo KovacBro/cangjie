@@ -1,7 +1,6 @@
-# 仓颉 · 上下文治理引擎（cangjie 1.0.0）
+# 仓颉 · 上下文治理引擎（Cangjie Skill v1.0.1）
 
 > 省 token 的正确顺序：**先裁剪，再定长，最后才压字**。
-> 版本 1.0.0 ｜ MIT（见仓库根 `LICENSE`）｜ 零必需依赖
 > 一个 `SKILL.md` + 一个零依赖 Python 包，可 CLI、可技能、可 MCP、可当库 —— 不绑定任何 Agent 框架。
 
 ```bash
@@ -36,6 +35,19 @@ cangjie pack  --budget 2000      # ④ 每 5–8 轮重建定长工作记忆包
 
 ---
 
+## 上下文安检 sift（1.0.1 新增）
+
+检验一段上下文里**什么有用、什么没用**：逐行给出证据（错误 / 指标 / 路径 / 决策 /
+术语命中 / 代码块），只把高置信噪音（进度行 / 分隔线 / 空白 / 连续重复）标为可省，
+**拿不准的一律保留**——"保留所有有用的"是硬约束，不是调参项。
+
+```bash
+cangjie sift -i run.log              # 安检报告：哪些行有证据、哪些是噪音（原文不动）
+cangjie sift --drop -- pytest -q     # 边跑边筛，噪音替换为"略去 N 行"标记
+```
+
+---
+
 ## 它到底怎么保证"后期不越来越贵"
 
 ```
@@ -60,7 +72,7 @@ cangjie install --target workbuddy   # ~/.workbuddy/skills/仓颉
 cangjie install --target claude      # ~/.claude/skills/仓颉
 cangjie install --target agents      # 幂等写入 AGENTS.md（Codex/Cursor/Cline）
 cangjie install --target dir --dest /path/to/skills
-cangjie mcp                          # MCP stdio server，6 个工具
+cangjie mcp                          # MCP stdio server，7 个工具
 ```
 
 MCP 客户端配置：
@@ -76,22 +88,20 @@ MCP 客户端配置：
 ## 目录结构
 
 ```
-cangjie/
-├── SKILL.md                     # 技能入口（Agent Skills 开放格式，任何宿主都读这个）
-├── AGENTS.md                    # 只读项目级指令的宿主用（Codex/Cursor/Cline）
+仓颉/
+├── SKILL.md                     # 技能入口（任何宿主都读这个）
 ├── README.md / README.en.md
-├── CHANGELOG.md                 # ★ 版本记录（1.0.0 起）
+├── CHANGELOG.md                 # ★ 版本记录（唯一，v1.0 → v1.0.1）
 ├── pyproject.toml               # pip 安装 + console_scripts: cangjie
-├── requirements.txt             # 可选增强：tiktoken / fonttools
-├── assets/icon.svg
 ├── docs/
 │   ├── 仓颉-1.0-开发文档.md      # ★ 设计 + 实测（主体文档）
 │   ├── 安装与集成.md             # ★ CLI/WorkBuddy/Claude/AGENTS/MCP/库/CI
 │   └── 优化建议.md               # ★ 路线图与反面清单
 ├── references/{字码协议,造字规范}.md
-├── templates/会话协议.md         # 可直接粘进上下文的协议模板
-├── cangjie/                     # 零依赖 Python 包（13 模块）
+├── templates/会话协议.md
+├── cangjie/                     # 零依赖 Python 包（15 模块）
 │   ├── trim.py        输出裁剪（有损，省最多）
+│   ├── sift.py        上下文安检（检验有用/没用，只删高置信噪音）
 │   ├── memory.py      状态卡 / 滚动结论 / 定长包
 │   ├── codec.py       可逆编解码
 │   ├── mine.py        新词发现（频次/邻接熵/凝聚度/极大化）
@@ -104,13 +114,14 @@ cangjie/
 │   └── data/carriers-o200k.json     5211 个单 token 字符（随包）
 ├── scripts/cj.py                # 免安装入口
 ├── tests/{test_cangjie.py,bench.py}
-└── examples/demo/               # 跑通的样例（4 份文档 + AGENTS.md 接入示例）
+├── assets/icon.svg
+└── examples/demo/               # 跑通的样例（含字典/摘要/包/字体/预览）
 ```
 
 ## 自检
 
 ```bash
-python tests/test_cangjie.py     # 29 项，应全绿
+python tests/test_cangjie.py     # 34 项，应全绿
 cangjie doctor                   # 环境 + 可逆性 + 字典完整性
 cangjie demo                     # 内置语料端到端演示
 python tests/bench.py <路径>     # 你的工程能压多少

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""仓颉 1.0.0 自测：编解码 / 挖掘 / 预算 / 载体 / 造字 / 裁剪 / 记忆 / MCP。
+"""仓颉 1.0.1 自测：编解码 / 挖掘 / 预算 / 载体 / 造字 / 裁剪 / 筛选 / 记忆 / MCP。
 
 运行：python tests/test_cangjie.py      （零依赖，不需要 pytest）
 """
@@ -24,6 +24,7 @@ from cangjie.mine import fragmentish, mine, plan, split_protected
 from cangjie.state import Dictionary, Entry
 from cangjie.tokenizer import Counter
 from cangjie.trim import detect_profile, trim
+from cangjie.sift import sift, verdicts
 
 
 class TestCodec(unittest.TestCase):
@@ -208,6 +209,62 @@ class TestTrim(unittest.TestCase):
         self.assertLess(len(out), len(raw))
 
 
+class TestSift(unittest.TestCase):
+    RAW = "\n".join([
+        "Collecting packages...  45%",
+        "================",
+        "PASSED tests/test_a.py::t1",
+        "ERROR tests/test_b.py::test_x - AssertionError: p99=380ms > 200ms",
+        "Collecting more wheels...  78%",
+        "已决定：重排序改用 fp16，风险是显存 3.2G",
+        "详细配置见 src/config.yaml 与 https://docs.example.com/api",
+    ])
+
+    def test_evidence_lines_kept(self):
+        vs = {v.text: v for v in verdicts(self.RAW)}
+        err = vs["ERROR tests/test_b.py::test_x - AssertionError: p99=380ms > 200ms"]
+        self.assertIn("错误", err.reason)
+        self.assertIn("指标", err.reason)
+        self.assertIn("决策", vs["已决定：重排序改用 fp16，风险是显存 3.2G"].reason)
+        self.assertIn("路径",
+                      vs["详细配置见 src/config.yaml 与 https://docs.example.com/api"].reason)
+        self.assertIn("术语命中", verdicts(self.RAW, terms=("重排序",))[5].reason)
+        self.assertEqual(vs["Collecting packages...  45%"].tag, "noise")
+        self.assertEqual(vs["================"].tag, "noise")
+
+    def test_drop_never_loses_useful(self):
+        out, st = sift(self.RAW, drop=True, terms=("重排序",))
+        for useful in ("ERROR tests/test_b.py", "已决定", "https://docs.example.com",
+                       "src/config.yaml", "PASSED tests/test_a.py"):
+            self.assertIn(useful, out)
+        self.assertNotIn("Collecting", out)
+        self.assertIn("略去", out)
+        self.assertLess(st.chars_after, st.chars_before)
+
+    def test_neutral_lines_survive(self):
+        raw = "这是普通的叙述行一。\n这是普通的叙述行二。"
+        vs = verdicts(raw)
+        self.assertTrue(all(v.tag == "neutral" for v in vs))
+        out, st = sift(raw, drop=True)
+        self.assertEqual(out, raw)
+        self.assertEqual(st.noise, 0)
+
+    def test_code_fence_protected(self):
+        raw = "```log\n================\nstep 1 ok\n```"
+        vs = verdicts(raw)
+        self.assertTrue(all(v.reason == "代码块" for v in vs))
+        out, _ = sift(raw, drop=True)
+        self.assertEqual(out, raw)
+
+    def test_dup_collapsed(self):
+        raw = "\n".join(["p99 = 380ms"] * 6)
+        vs = verdicts(raw)
+        self.assertEqual(sum(1 for v in vs if v.tag == "dup"), 5)
+        out, st = sift(raw, drop=True)
+        self.assertEqual(out, "p99 = 380ms")
+        self.assertEqual(st.dup, 5)
+
+
 class TestMemory(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp(prefix="cj-mem-"))
@@ -297,6 +354,7 @@ class TestMcp(unittest.TestCase):
         self.assertEqual(out[0]["result"]["serverInfo"]["name"], "cangjie")
         names = [t["name"] for t in out[1]["result"]["tools"]]
         self.assertIn("cangjie_compress", names)
+        self.assertIn("cangjie_sift", names)
         self.assertIn("向量检索延迟", out[3]["result"]["content"][0]["text"])
 
 

@@ -13,7 +13,7 @@
       }
     }
 
-暴露 6 个工具：compress / expand / block / stats / trim / pack。
+暴露 7 个工具：compress / expand / block / stats / trim / pack / sift。
 """
 from __future__ import annotations
 
@@ -82,14 +82,19 @@ TOOLS = [
         },
     },
     {
-        "name": "cangjie_pack",
-        "description": "生成定长工作记忆包（密码本 + 状态卡 + 滚动结论 + 摘要）。",
+        "name": "cangjie_sift",
+        "description": "上下文安检：检验文本里什么有用、什么没用。逐行给出证据"
+                       "（错误/指标/路径/决策/术语/代码块），只把高置信噪音标为可省，"
+                       "拿不准的一律保留。drop=true 时返回剔除噪音后的文本。",
         "inputSchema": {
             "type": "object",
             "properties": {
+                "text": {"type": "string"},
+                "drop": {"type": "boolean", "default": False,
+                         "description": "true 返回筛后文本；false 只返回安检报告"},
                 "root": {"type": "string"},
-                "budget": {"type": "integer", "default": 2000},
             },
+            "required": ["text"],
         },
     },
 ]
@@ -175,6 +180,19 @@ def tool_pack(args: dict) -> dict:
                f"{int(detail['budget'])} tok")
 
 
+def tool_sift(args: dict) -> dict:
+    from .sift import report as sift_report, sift as _sift
+
+    root = _root(args)
+    dic = Dictionary.load(root)
+    terms = tuple(e.p for e in dic.entries)
+    text = args.get("text", "")
+    if args.get("drop"):
+        out, st = _sift(text, drop=True, terms=terms)
+        return _ok(out + f"\n\n[仓颉sift] {st.summary()}")
+    return _ok(sift_report(text, terms=terms))
+
+
 HANDLERS = {
     "cangjie_compress": tool_compress,
     "cangjie_expand": tool_expand,
@@ -182,6 +200,7 @@ HANDLERS = {
     "cangjie_stats": tool_stats,
     "cangjie_trim": tool_trim,
     "cangjie_pack": tool_pack,
+    "cangjie_sift": tool_sift,
 }
 
 

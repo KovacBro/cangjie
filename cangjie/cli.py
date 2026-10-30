@@ -292,6 +292,38 @@ def cmd_trim(args) -> int:
     return code
 
 
+def cmd_sift(args) -> int:
+    """上下文安检：逐行判定有用/没用。默认只报告，--drop 才删（只删高置信噪音）。"""
+    from .sift import report as sift_report, sift as _sift
+
+    root = Path(args.root).resolve()
+    cfg = load_config(root)
+    c = _counter(cfg)
+    cmd = [x for x in (args.cmd or []) if x != "--"]
+    if cmd:
+        proc = subprocess.run(cmd, capture_output=True, text=True,
+                              encoding="utf-8", errors="replace")
+        raw = (proc.stdout or "") + (proc.stderr or "")
+        code = proc.returncode
+    else:
+        raw = _read(args.input)
+        code = 0
+
+    dic = Dictionary.load(root)
+    terms = tuple(e.p for e in dic.entries)
+    if args.drop:
+        out, st = _sift(raw, drop=True, terms=terms)
+        _write(out, args.output)
+        before, after = c.count(raw), c.count(out)
+        append_ledger({"event": "sift", "lines": st.lines,
+                       "tokens_before": round(before, 1),
+                       "tokens_after": round(after, 1)}, root)
+        print(f"[仓颉sift] {fmt_saved(before, after)} · {st.summary()}", file=sys.stderr)
+    else:
+        print(sift_report(raw, terms=terms, show=args.show))
+    return code
+
+
 def cmd_seed(args) -> int:
     """人工锁定术语：永不被淘汰，也不被重新分配载体字。"""
     root = Path(args.root).resolve()
@@ -813,6 +845,14 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--full", action="store_true", help="不裁剪，原样输出")
     s.add_argument("cmd", nargs=argparse.REMAINDER, help="-- 之后的命令")
     s.set_defaults(func=cmd_trim)
+
+    s = sub.add_parser("sift", help="上下文安检：检验有用/没用，只删高置信噪音")
+    s.add_argument("-i", "--input")
+    s.add_argument("--drop", action="store_true", help="生成筛后文本（默认只报告，原文不动）")
+    s.add_argument("-o", "--output", help="筛后文本写入文件（配合 --drop）")
+    s.add_argument("--show", type=int, default=20, help="报告显示的噪音行数")
+    s.add_argument("cmd", nargs=argparse.REMAINDER, help="-- 之后的命令")
+    s.set_defaults(func=cmd_sift)
 
     s = sub.add_parser("seed", help="锁定术语（永不淘汰）")
     s.add_argument("--add", nargs="+")

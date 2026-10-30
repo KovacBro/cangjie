@@ -1,0 +1,15 @@
+{
+  "goal": "把向量检索延迟压到 200ms",
+  "blocker": "reranker 偶尔 OOM",
+  "decided": [
+    "重排序只取 top 50",
+    "超时走降级回答"
+  ],
+  "next": [
+    "跑一次 200 QPS 压测"
+  ],
+  "facts": {
+    "队列": "dead-letter"
+  },
+  "updated": "2026-10-27T20:54:27"
+}

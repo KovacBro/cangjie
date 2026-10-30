@@ -10,6 +10,9 @@ build/
 # 仓颉本地状态与生成物（可重新生成，不入库）
 .cangjie/
 *.ttf
+# 例外：examples/demo 是文档声称的"跑通的样例"，其演示产物随仓库分发
+!examples/demo/.cangjie/
+!examples/demo/assets/*.ttf
 
 # 编辑器 / 系统
 .idea/

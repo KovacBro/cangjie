@@ -1,6 +1,6 @@
 """载体层：一个"字"从哪来 —— 按**实测 token 单价**选型。
 
-⚠ 一条来自实测的关键事实（o200k_base，2026-10 实测，见 assets/carriers-o200k.json）：
+⚠ 一条来自实测的关键事实（o200k_base，2026-10 实测，见 cangjie/data/carriers-o200k.json）：
 
     常用汉字      U+4E00 区 80% 是 2 token/字，只有 19.5% 是 1 token
     CJK 扩展 A    U+3400 区 96% 是 3 token/字        ← 生僻字做载体反而最贵
